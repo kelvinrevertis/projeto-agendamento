@@ -1,13 +1,12 @@
-import './App.css'
-import { Sidebar } from './components/Sidebar/sidebar'
+import { Layout } from './components/Layout'
+
 
 function App() {
 
   return (
-<div>
-<p>Hello</p>
-<Sidebar/>
-</div>
+    <div>
+      <Layout />
+    </div>
   )
 }
 
