@@ -1,4 +1,5 @@
 import { Layout } from './components/Layout'
+import './../src/index.css'
 
 
 function App() {
