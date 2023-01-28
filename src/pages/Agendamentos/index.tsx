@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react"
+import React, { FormEvent, useEffect, useState, ChangeEvent } from "react"
 import * as Dialog from '@radix-ui/react-dialog'
 import type { Agendamento, FormValues } from './types'
 
@@ -7,10 +7,13 @@ export const Agendamentos = () => {
 
     const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
 
+    console.log(agendamentos.length)
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = event.target as unknown as FormValues;
+
         const paciente = form.paciente.value;
         const email = form.email.value;
         const cpf = form.cpf.value;
@@ -19,11 +22,12 @@ export const Agendamentos = () => {
         const procedimento = form.procedimento.value;
         const valor = form.valor.value;
         const data = form.data.value;
+        const checked = false;
 
         let storedAgendamentos = JSON.parse(localStorage.getItem('agendamentos') || '[]');
 
 
-        storedAgendamentos.push({ paciente, email, cpf, telefone, medico, procedimento, valor, data });
+        storedAgendamentos.push({ paciente, email, cpf, telefone, medico, procedimento, valor, data, checked });
 
 
         localStorage.setItem('agendamentos', JSON.stringify(storedAgendamentos));
@@ -36,6 +40,14 @@ export const Agendamentos = () => {
         const storedAgendamentos = JSON.parse(localStorage.getItem('agendamentos') || '[]');
         setAgendamentos(storedAgendamentos);
     }, []);
+
+
+    function handleExcluir(index) {
+        const newAgendamentos = [...agendamentos];
+        newAgendamentos.splice(index, 1);
+        localStorage.setItem('agendamentos', JSON.stringify(newAgendamentos));
+        setAgendamentos(newAgendamentos);
+    }
 
     return (
         <div>
@@ -107,7 +119,7 @@ export const Agendamentos = () => {
                 <table className="table-auto w-full">
                     <thead>
                         <tr className="bg-gray-200">
-                            <th className="px-4 py-2">Atendidos</th>
+                            <th className="px-4 py-2">Atendido</th>
                             <th className="px-4 py-2">Paciente</th>
                             <th className="px-4 py-2">E-Mail</th>
                             <th className="px-4 py-2">CPF</th>
@@ -123,7 +135,14 @@ export const Agendamentos = () => {
                         {agendamentos.map((agendamento, index) => (
                             <tr key={index} className="hover:bg-gray-100">
                                 <td className="px-4 py-2">
-                                    <input type="checkbox" className="form-checkbox" />
+                                    <input
+                                        type="checkbox"
+                                        className="form-checkbox"
+                                        onChange={(event) => {
+                                            localStorage.setItem(`checkbox_${index}`, event.target.checked.toString());
+                                        }}
+                                        defaultChecked={JSON.parse(localStorage.getItem(`checkbox_${index}`) || 'false')}
+                                    />
                                 </td>
                                 <td className="px-4 py-2">{agendamento.paciente}</td>
                                 <td className="px-4 py-2">{agendamento.email}</td>
@@ -134,7 +153,12 @@ export const Agendamentos = () => {
                                 <td className="px-4 py-2">{agendamento.valor}</td>
                                 <td className="px-4 py-2">{agendamento.data}</td>
                                 <td className="px-4 py-2">
-                                    <button className="bg-red-500 text-white px-2 py-1 rounded-sm hover:bg-red-600">Excluir</button>
+                                    <button
+                                        className="bg-red-500 text-white px-2 py-1 rounded-sm hover:bg-red-600"
+                                        onClick={() => handleExcluir(index)}
+                                    >
+                                        Excluir
+                                    </button>
                                 </td>
                             </tr>
                         ))}
