@@ -21,6 +21,7 @@ export const Dashboard = () => {
     return (
         <div>
             <C.CardContainer>
+                <h1 className="fixed px-4">Dashboard</h1>
                 <C.CardWrapper><Card title="Agendamentos do dia" text={agendamentos.length.toString()} /></C.CardWrapper>
                 <C.CardWrapper><Card title="Pacientes atendidos no dia" text={isChecked.filter(Boolean).length.toString()} /></C.CardWrapper>
                 <C.CardWrapper><Card title="Faturamento do dia" text={sumAll.toString()} /></C.CardWrapper>

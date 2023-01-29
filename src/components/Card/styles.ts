@@ -10,6 +10,7 @@ export const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 4rem;
 `;
 
 export const CardTitle = styled.h3`

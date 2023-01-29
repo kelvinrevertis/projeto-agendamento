@@ -1,5 +1,3 @@
-import { TypeChecker } from "typescript";
-
 export interface Agendamento {
     paciente: string;
     email: string;
